@@ -17,7 +17,11 @@
   },
   "homepage": "https://github.com/senyaak/project_days_messanger#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "crypto": "0.0.3",
     "express": "^4.15.2",
+    "jquery": "^3.2.1",
+    "jquery.cookie": "^1.4.1",
     "mongoose": "^4.9.7",
     "socket.io": "^1.7.3"
   }
