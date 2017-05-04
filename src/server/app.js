@@ -28,6 +28,14 @@ const server = app.listen(conf.port, conf.host, () => {
 
 app.use(cookieParser());
 
+
+// define public folders
+app.use("/js", express.static(__dirname + "/../Client/js"));
+app.use("/css", express.static(__dirname + "/../Client/style/css"));
+app.use("/image", express.static(__dirname + "/../Client/style/image"));
+app.use(express.static("node_modules/jquery/dist"));
+app.use(express.static("node_modules/jquery.cookie"));
+
 // Index page
 app.get("/", (req, res, next) => {
   res.status(200).sendFile(path.resolve(__dirname + "/../Client/index.html"));
@@ -63,7 +71,6 @@ app.use((req, res, next) => {
       next();
     });
   } else {
-    // login with token
     User.CheckToken(req.cookies.token).then((user) => {
       req.user = user;
       next();
@@ -79,13 +86,17 @@ app.get("/messages", (req, res, next) => {
     res.json(msgs);
   });
 });
-// define js folder
-app.use("/js", express.static(__dirname + "/../Client/js"));
-app.use("/css", express.static(__dirname + "/../Client/style/css"));
-app.use("/image", express.static(__dirname + "/../Client/style/image"));
-app.use(express.static("node_modules/jquery/dist"));
-app.use(express.static("node_modules/jquery.cookie"));
 
+app.get("/messages/:name", (req, res, next) => {
+  if (!req.user) {
+    res.sendStatus(401);
+    return;
+  }
+  Message.GetDialog(req.user.authtoken, req.params.name).then((msgs) => {
+    res.json(msgs);
+    next();
+  });
+});
 // init socket
 var io = socket(server);
 io.on("connection", (socket) => {

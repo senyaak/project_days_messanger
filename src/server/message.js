@@ -65,7 +65,25 @@ exports = {
         }, () => res([]));
       });
     });
-  }
+  },
+  GetDialog: (token, secondUserName) => {
+    return new Promise((res, rej) => {
+      User.FindUser({authtoken: token}).then((user) => {
+        Message.find({$or: [
+          {from: user.username, to: secondUserName},
+          {from: secondUserName, to: user.username},
+        ]}, (err, msgs) => {
+          if(err) {
+            console.log("fail");
+            res([])
+          } else {
+            console.log("success");
+            res(msgs);
+          }
+        }, () => res([]));
+      })
+    });
+  },
 };
 
 module.exports.Message = exports;

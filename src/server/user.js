@@ -60,7 +60,7 @@ exports = {
   CheckToken: (token) => {
     return new Promise((res, rej) => {
       User.findOne({ authtoken: token }, (err, user) => {
-        if (err) {
+        if (err || user === null) {
           rej(err);
           return;
         }
