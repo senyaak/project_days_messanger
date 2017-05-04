@@ -1,7 +1,5 @@
 var socket = io();
 function UpdateState() {
-  $(".hiddable").addClass("hidden");
-
   if($.cookie("token")) {
     socket.emit("loggedin", $.cookie("token"));
     setUsername();
@@ -11,7 +9,7 @@ function UpdateState() {
 }
 
 function login() {
-  var name = $("#usernameInput").val();
+  var name = $("#ipUsername").val();
   $.ajax({
     url: "/login",
     type: "POST",
@@ -27,7 +25,7 @@ function login() {
 }
 
 function signin() {
-  var name = $("#usernameInput").val();
+  var name = $("#ipUsername").val();
   $.ajax({
     url: "/signin",
     type: "POST",

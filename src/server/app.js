@@ -81,7 +81,8 @@ app.get("/messages", (req, res, next) => {
 });
 // define js folder
 app.use("/js", express.static(__dirname + "/../Client/js"));
-app.use("/css", express.static(__dirname + "/../Client/css"));
+app.use("/css", express.static(__dirname + "/../Client/style/css"));
+app.use("/image", express.static(__dirname + "/../Client/style/image"));
 app.use(express.static("node_modules/jquery/dist"));
 app.use(express.static("node_modules/jquery.cookie"));
 

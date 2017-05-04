@@ -1,0 +1,51 @@
+
+body {
+
+}
+
+div#anchor {
+
+  position: absolute;
+  margin: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 300px;
+  height: 400px;
+  background-color: gainsboro;
+  border-radius: 3px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input#ipUsername {
+
+  width: 80%;
+  margin-top: 50px;
+}
+
+button#bnLogin{
+  width: 80%;
+  font-weight: bold;
+}
+
+button#bnSignin{
+  width: 80%;
+  font-weight: bold;
+}
+
+label#lbHeader{
+  margin-top: 20px;
+  font-size: 30px;
+}
+
+button#bnLogin{
+  margin-top: 50px;
+}
+
+button#bnSignin{
+  margin-top: 30px;
+}
