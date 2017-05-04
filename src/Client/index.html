@@ -1,4 +1,5 @@
 <!DOCTYPE html >
+<html lang="en">
 <html>
   <head>
     <meta charset="utf-8">
@@ -11,11 +12,28 @@
 </head>
   <body background="image/banner.jpg">
 
-      <div id="anchor">
-          <label class="label" id="lbHeader">Simple Chat Tool</label>
+      <div id="loginDialog">
+          <label class="label" id="lbHeader">Web Messanger</label>
           <input type="text" id="ipUsername" placeholder="Username">
-          <button class="button" id="bnLogin" onclick="login()">Login</button>
-          <button class="button" id="bnSignin" onClick="signin()">Registrieren</button>
+          <button class="button bnloginDialog" onclick="login()">Login</button>
+          <button class="button bnloginDialog" onClick="signin()">Registrieren</button>
+      </div>
+
+      <div id="chatroomAnchor">
+
+          <div id="chatroomPanelLeft">
+            <div id="userPanel" class="align-center">
+              <button class="button bnloginDialog" onclick="logout()">Logout</button>
+              <label class="label">Username hier</label>
+            </div>
+              <div id="contactPanel">
+
+              </div>
+          </div>
+
+          <div id="chatroomPanelRight">
+
+          </div>
 
       </div>
 

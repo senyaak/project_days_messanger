@@ -1,51 +1,82 @@
-
-body {
-
+body{
+    margin: 0px;
 }
 
-div#anchor {
+div#loginDialog {
 
-  position: absolute;
-  margin: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 300px;
-  height: 400px;
-  background-color: gainsboro;
-  border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+    height: 400px;
+    background-color: gainsboro;
+    border-radius: 3px;
 }
 
 input#ipUsername {
 
-  width: 80%;
-  margin-top: 50px;
+    width: 80%;
+    margin-top: 50px;
+    margin-bottom: 20px;
 }
 
-button#bnLogin{
-  width: 80%;
-  font-weight: bold;
-}
+button.bnloginDialog{
 
-button#bnSignin{
-  width: 80%;
-  font-weight: bold;
+    width: 80%;
+    font-weight: bold;
+    margin-top: 20px;
 }
 
 label#lbHeader{
-  margin-top: 20px;
-  font-size: 30px;
+
+    margin-top: 20px;
+    font-size: 30px;
 }
 
-button#bnLogin{
-  margin-top: 50px;
+/* CHATROOM **************************************************/
+
+div#chatroomAnchor{
+
+    visibility: hidden;
+
+    position:absolute;
+    width:100%;
+    height:100%;
+    min-width: 900px;
+
+    display: flex;
+    flex-direction: row;
 }
 
-button#bnSignin{
-  margin-top: 30px;
+div#chatroomPanelLeft{
+
+    flex: 1;
+    background-color: #f9f9f9;
+
+    display: flex;
+    flex-direction: column;
+}
+
+div#chatroomPanelRight{
+
+    flex: 3;
+    border: thin solid blue;
+}
+
+div#userPanel {
+
+    flex: 1;
+}
+
+div#contactPanel{
+
+    flex: 7;
+    background-color: #3ba666;
 }

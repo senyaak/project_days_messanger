@@ -3,6 +3,7 @@ function UpdateState() {
   if($.cookie("token")) {
     socket.emit("loggedin", $.cookie("token"));
     setUsername();
+    enterChatroom();
   } else {
     $(".authPanel.hidden").removeClass("hidden");
   }
@@ -48,6 +49,7 @@ function logout() {
     type: "POST",
     success: () => {
       localStorage.removeItem("username");
+      leaveChatroom();
       UpdateState();
     },
     error: () => {
@@ -63,8 +65,7 @@ function setUsername(username) {
   } else {
     localStorage.setItem("username", username);
   }
-  $(".leftPanel.hidden").removeClass("hidden");
-  $("#username").html(username);
+  $("#userPanel .label").html(username);
 }
 
 $(document).ready(() => {
@@ -74,3 +75,30 @@ $(document).ready(() => {
 // socket.on("newMessage", (msgObj) => {
 //   console.log(msgObj);
 // })
+
+function enterChatroom(){
+  let $loginDialog = $("#loginDialog");
+  let $chatroomAnchor = $('#chatroomAnchor');
+
+  $chatroomAnchor.css("marginLeft", 0);
+  $loginDialog.css({margin: "0px 0px 0px "+$loginDialog.css('margin-left')+"px"});
+  $loginDialog.animate({marginLeft: "-300px"}, 300, () => {
+    $loginDialog.css("display", "none");;
+    //$('body').attr("background", "");
+    $chatroomAnchor.css("visibility", "visible");
+  });
+}
+
+
+function leaveChatroom() {
+  let $loginDialog = $("#loginDialog");
+  let $chatroomAnchor = $('#chatroomAnchor');
+
+  $loginDialog.css("display", "flex");;
+  $chatroomAnchor.animate({marginLeft: "-300px"}, 300, () => {
+    $chatroomAnchor.css("visibility", "hidden");
+  });
+  $loginDialog.animate({marginLeft: "300px"}, 300, () => {
+    $loginDialog.css("margin", "auto");;
+  });
+}
