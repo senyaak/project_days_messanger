@@ -5,8 +5,28 @@
     <script src="jquery.cookie.js "></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/main.js"></script>
+    <link href="/css/default.css" rel="stylesheet">
 </head>
   <body>
-    <h1>Hello world!</h1>
+    <!-- <h1>Hello world!</h1> -->
+    <div class="authPanel hidden hiddable">
+      <div>
+        <input type="text" id="usernameInput"> <label for="usernameInput">Username</label>
+      </div>
+      <div class="login">
+        <button name="button" onclick="login()">Login</button>
+      </div>
+      <div class="signin">
+        <button name="button" onclick="signin()">Signin</button>
+      </div>
+    </div>
+    <div class="leftPanel hidden hiddable">
+      <div id="username">
+      </div>
+      <button type="button" onclick="logout()">LogOut</button>
+      <div>
+      </div>
+    </div>
+
   </body>
 </html>

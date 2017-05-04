@@ -53,6 +53,15 @@ app.use((req, res, next) => {
     }, () => {
       res.status(400).send("User already exists");
     });
+  } else if(/\/logout\/?/.test(req.url) && req.method == "POST") {
+    User.Logout(req.cookies.token).then(() => {
+      res.cookie("token", "");
+      res.sendStatus(200);
+      next();
+    }, (err) => {
+      res.status(400).json(err);
+      next();
+    });
   } else {
     // login with token
     User.CheckToken(req.cookies.token).then((user) => {

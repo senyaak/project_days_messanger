@@ -134,6 +134,25 @@ exports = {
         });
       }
     })
+  },
+  Logout: (token) => {
+    return new Promise((res, rej) => {
+      User.findOne({authtoken: token}, (err, user) => {
+        if(err || user === null) {
+          rej(err);
+          return;
+        } else {
+          user.authtoken = null;
+          user.save((err, user) => {
+            if(err) {
+              rej(err);
+            } else {
+              res();
+            }
+          });
+        }
+      });
+    });
   }
 };
 
