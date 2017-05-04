@@ -8,13 +8,14 @@ var app = express();
 
 
 var User = require("./user.js").User;
+var Message = require("./message.js").Message;
 
 
 var conf = JSON.parse(fs.readFileSync("config/config.json", "utf8"));
 
 
 // connect to db
-mongoose.connect("mongodb://localhost/messagerDB");
+mongoose.connect("mongodb://localhost/messangerDB");
 
 // start server
 const server = app.listen(conf.port, conf.host, () => {
@@ -35,7 +36,7 @@ app.get("/", (req, res, next) => {
 // Authentication
 app.use((req, res, next) => {
   if (/\/login\/?/.test(req.url) && req.method == "POST") {
-    // login with username
+    // login with username\
     if(req.headers.user) {
       User.SetToken(req.headers.user).then((token) => {
         res.send({token: token});
@@ -56,7 +57,6 @@ app.use((req, res, next) => {
     // login with token
     User.CheckToken(req.cookies.token).then((user) => {
       req.user = user;
-      console.log("set cookie")
       next();
     }, () => {
       res.sendStatus(401);
@@ -66,11 +66,13 @@ app.use((req, res, next) => {
 
 
 app.get("/messages", (req, res, next) => {
-  console.log(req.user);
-  res.json([]);
+  Message.GetMessagesOfUser(req.user.authtoken).then((msgs) => {
+    res.json(msgs);
+  });
 });
 // define js folder
 app.use("/js", express.static(__dirname + "/../Client/js"));
+app.use("/css", express.static(__dirname + "/../Client/css"));
 app.use(express.static("node_modules/jquery/dist"));
 app.use(express.static("node_modules/jquery.cookie"));
 
@@ -79,11 +81,27 @@ var io = socket(server);
 io.on("connection", (socket) => {
   socket.on("loggedin", (token) => {
     User.ConnectSocket(token, socket.id);
-  });
 
-  socket.on("disconnect", () => {
-    User.DisconnectSocket(socket.id);
-  })
+    Message.GetMessagesOfUser(token);
+    //===== Messaging ===
+    socket.on("sendMessage", (toUser, msg) => {
+      Message.sendMessage(socket.id, toUser, msg).then((res) => {
+        if(res.toSocket) {
+          io.to(res.toSocket).emit("newMessage", {from: res.fromUser, msg: msg, msgId: res.msgId});
+        }
+
+        socket.emit("sendingSuccess");
+      }, () => {
+        socket.emit("sendingFail");
+      });
+    });
+
+    //===================
+
+    socket.on("disconnect", () => {
+      User.DisconnectSocket(socket.id);
+    })
+  });
 
   // TODO init events
   // TODO messages - send read

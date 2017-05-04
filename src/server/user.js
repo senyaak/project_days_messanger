@@ -29,6 +29,17 @@ exports = {
       });
     });
   },
+  FindUser: (userData) => {
+    return new Promise((res, rej) => {
+      User.findOne(userData, (err, user) => {
+        if(err || user === null) {
+          rej(err);
+        } else {
+          res(user);
+        }
+      });
+    });
+  },
   IsUserExists: (userName) => {
     return new Promise((res, rej) => {
       User.findOne({username: userName}, (err, user) => {
@@ -94,12 +105,16 @@ exports = {
   },
   ConnectSocket: (token, socketId) => {
     exports.CheckToken(token).then(user => {
+      // console.log(user)
       user.socket = socketId;
       user.save();
     });
   },
   DisconnectSocket: (socketId) => {
     User.findOne({socket: socketId}, (err, user) => {
+      if(err || user === null) {
+        return;
+      }
       user.socket = null;
       user.save();
     });
