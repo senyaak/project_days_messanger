@@ -8,8 +8,9 @@ function setChat(name) {
     url: `/messages/${name}`,
     type: "get",
     success: (data) => {
+      console.log("test", data);
       data.forEach((message, i) => {
-        console.log("test", message);
+        // TODO add messages
       });
     },
     error: () => {
@@ -21,4 +22,10 @@ function setChat(name) {
 function sendMessage(selector) {
   console.log("send message to", chosenUser);
   socket.emit("sendMessage", chosenUser, $(selector).val());
+}
+
+
+function ClearChat() {
+  chosenUser = null;
+  // TODO remove messages
 }

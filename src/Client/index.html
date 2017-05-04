@@ -28,6 +28,12 @@
               <button class="button bnloginDialog" onclick="logout()">Logout</button>
               <label class="label">Username hier</label>
             </div>
+              <div class="addContact">
+                <input id="newContact" type="text">
+                <button onclick="AddNewContact($('#newContact').val(), setChat)">
+                  Add New Contact
+                </button>
+              </div>
               <div id="contactPanel">
 
               </div>

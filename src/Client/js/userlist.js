@@ -12,16 +12,7 @@ function CreateUserlist(container, openDialogFn) {
     type: "get",
     success: (data) => {
       data.forEach((user, i) => {
-        $("#contactList").append(`
-          <li class="contact-${i}">
-            ${user}
-          </li>
-        `);
-        if(openDialogFn) {
-          $(`.contact-${i}`).click(() => {
-            openDialogFn(user);
-          });
-        }
+        CreateListElement(user, openDialogFn);
       });
     },
     error: () => {
@@ -32,4 +23,51 @@ function CreateUserlist(container, openDialogFn) {
 
 function ClearUserlist(container) {
   $(container).empty();
+}
+
+function AddNewContact(name, openDialogFn) {
+  $.ajax({
+    url: `/contactlist/${name}`,
+    type: "put",
+    success: (data,resMessage,response) => {
+      if(response.status !== 304) {
+        CreateListElement(name, openDialogFn);
+      }
+    },
+    error: () => {
+      console.log("Server Unavailable!");
+    }
+  });
+}
+
+function DeleteContact(name) {
+  $.ajax({
+    url: `/contactlist/${name}`,
+    type: "delete",
+    success: (data,resMessage,response) => {
+      if(response.status !== 304) {
+        $(`.contact-${name}`).remove()
+        if(chosenUser === name) {
+          clearChat();
+        }
+      }
+    },
+    error: () => {
+      console.log("Server Unavailable!");
+    }
+  });
+}
+
+
+function CreateListElement(user, openDialogFn) {
+  $("#contactList").append(`
+    <li class="contact-${user}">
+      <span class="dialog-changer">${user}</span> <button onclick="DeleteContact('${user}')"> - </button>
+    </li>
+  `);
+  if(openDialogFn) {
+    $(`.contact-${user} .dialog-changer`).click(() => {
+      openDialogFn(user);
+    });
+  }
 }
