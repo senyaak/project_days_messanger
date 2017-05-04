@@ -18,6 +18,7 @@ exports = {
     return new Promise((res, rej) => {
       var newUser = new User({
         username: userName,
+        contactList: [],
       });
       newUser.save((err) => {
         if (err) {
@@ -32,8 +33,10 @@ exports = {
   FindUser: (userData) => {
     return new Promise((res, rej) => {
       User.findOne(userData, (err, user) => {
-        if(err || user === null) {
+        if(err) {
           rej(err);
+        } else if(user === null) {
+          rej(new Error("User not found"));
         } else {
           res(user);
         }
@@ -153,6 +156,45 @@ exports = {
         }
       });
     });
+  },
+  GetContactList: (token) => {
+    return exports.FindUser({authtoken: token}).then((user) => {
+      return user.contactList;
+    }, (err) => {
+      return err;
+    });
+  },
+  AddToContactList: (token, addUsername) => {
+    return Promise.all([
+      exports.FindUser({authtoken: token}),
+      exports.FindUser({username: addUsername}),
+    ]).then((users) => {
+      if(users[0].username === users[1].username) {
+        return Promise.reject(new Error("can't add yourself"));
+      } else if(users[0].contactList.indexOf(addUsername) !== -1) {
+        return Promise.reject(new Error("already done"));
+      } else {
+        users[0].contactList.push(addUsername);
+        return users[0].save((err, user) => {
+          if(err) {
+            return Promise.reject(err);
+          } else {
+            return Promise.resolve();
+          }
+        });
+      }
+    });
+  },
+  RemoveFromContactList: (token, removeUsername) => {
+    return exports.FindUser({authtoken: token}).then((user) => {
+      var index = user.contactList.indexOf(removeUsername);
+      if(index !== -1) {
+        user.contactList.splice(index, 1);
+        return user.save();
+      } else {
+        return Promise.reject(new Error("Nothing to delete"));
+      }
+    })
   }
 };
 

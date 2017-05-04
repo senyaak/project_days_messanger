@@ -68,15 +68,19 @@ app.use((req, res, next) => {
       next();
     }, (err) => {
       res.status(400).json(err);
-      next();
     });
   } else {
-    User.CheckToken(req.cookies.token).then((user) => {
-      req.user = user;
-      next();
-    }, () => {
+    if(!req.cookies.token) {
       res.sendStatus(401);
-    })
+    } else {
+      User.CheckToken(req.cookies.token).then((user) => {
+        req.user = user;
+        next();
+      }, () => {
+        res.sendStatus(401);
+      })
+    }
+
   }
 });
 
@@ -88,15 +92,60 @@ app.get("/messages", (req, res, next) => {
 });
 
 app.get("/messages/:name", (req, res, next) => {
-  if (!req.user) {
-    res.sendStatus(401);
-    return;
-  }
   Message.GetDialog(req.user.authtoken, req.params.name).then((msgs) => {
     res.json(msgs);
     next();
   });
 });
+
+app.put("/message/:id", (req, res, next) => {
+  Message.SetReadStatus(req.params.id, req.user.authtoken).then((sender) => {
+    if(sender && sender.socket) {
+      io.to(sender.socket).emit("messageread", req.params.id);
+    }
+    
+    res.sendStatus(200);
+    next();
+  }).catch((err) => {
+    console.log(err)
+    res.sendStatus(400);
+  });
+});
+
+app.get("/contactlist", (req, res, next) => {
+  User.GetContactList(req.user.authtoken).then((list) => {
+    res.json(list);
+  }, (err) => {
+    res.sendStatus(400);
+  });
+});
+
+app.put("/contactlist/:name", (req, res, next) => {
+  User.AddToContactList(req.user.authtoken, req.params.name).then((list) => {
+    res.sendStatus(200);
+  }, (err) => {
+    if(err.message === "already done") {
+      res.sendStatus(304);
+    } else {
+      res.sendStatus(400);
+    }
+  });
+});
+
+app.delete("/contactlist/:name", (req, res, next) => {
+  User.RemoveFromContactList(req.user.authtoken, req.params.name).then((list) => {
+    res.sendStatus(200);
+  }, (err) => {
+    if(err.message === "Nothing to delete") {
+      res.sendStatus(304);
+    } else {
+      res.sendStatus(400);
+    }
+  });
+});
+
+
+
 // init socket
 var io = socket(server);
 io.on("connection", (socket) => {

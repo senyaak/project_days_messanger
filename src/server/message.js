@@ -12,12 +12,11 @@ var messageSchema = new Schema({
   created_at: Date,
 });
 
-
-// FIXME
-messageSchema.pre('save', (next) => {
+messageSchema.pre('save', function(next) {
   if(this.isNew) {
     this.created_at = new Date();
     this.read = false;
+    this.save();
   };
   next();
 });
@@ -50,9 +49,6 @@ exports = {
       });
     });
   },
-  readMessage: (id) => {
-    // Message.findById
-  },
   GetMessagesOfUser: (token) => {
     return new Promise((res, rej) => {
       User.FindUser({authtoken: token}).then((user) => {
@@ -83,6 +79,26 @@ exports = {
         }, () => res([]));
       })
     });
+  },
+  SetReadStatus: (id, token) => {
+    return User.FindUser({authtoken: token}).then((user) => {
+      return new Promise((res, rej) => {
+        Message.findOne({_id: id}, (err, message) => {
+          if (message.to !== user.username) {
+            rej(400);
+          } else {
+            message.read = true;
+            message.save((err, message) => {
+              if(err) {
+                rej(err);
+              } else {
+                res(User.FindUser({username: message.from}).then((user) => user).cathc(err => null));
+              }
+            });
+          }
+        });
+      });
+    })
   },
 };
 
