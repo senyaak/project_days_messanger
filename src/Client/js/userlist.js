@@ -2,7 +2,6 @@
 // container - HTMLElement
 // openDialogFn - function takes user name an argument
 function CreateUserlist(container, openDialogFn) {
-  console.log("start", $(container))
   $(container).append(`
     <ul id="contactList">
     </ul>
@@ -18,9 +17,8 @@ function CreateUserlist(container, openDialogFn) {
             ${user}
           </li>
         `);
-
         if(openDialogFn) {
-          $(`.contact-${name}`).click(() => {
+          $(`.contact-${i}`).click(() => {
             openDialogFn(user);
           });
         }
@@ -30,5 +28,8 @@ function CreateUserlist(container, openDialogFn) {
       console.log("Server Unavailable!");
     }
   });
+}
 
+function ClearUserlist(container) {
+  $(container).empty();
 }

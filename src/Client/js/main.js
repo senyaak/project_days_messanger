@@ -1,4 +1,5 @@
 var socket = io();
+
 function UpdateState() {
   if($.cookie("token")) {
     socket.emit("loggedin", $.cookie("token"));
@@ -87,6 +88,8 @@ function enterChatroom(){
     //$('body').attr("background", "");
     $chatroomAnchor.css("visibility", "visible");
   });
+
+  CreateUserlist($("#contactPanel"), setChat);
 }
 
 
@@ -99,6 +102,7 @@ function leaveChatroom() {
     $chatroomAnchor.css("visibility", "hidden");
   });
   $loginDialog.animate({marginLeft: "300px"}, 300, () => {
-    $loginDialog.css("margin", "auto");;
+    $loginDialog.css("margin", "auto");
   });
+  ClearUserlist($("#contactPanel"));
 }

@@ -6,6 +6,8 @@
     <script src="jquery.min.js "></script>
     <script src="jquery.cookie.js "></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="js/messages.js"></script>
+    <script src="js/userlist.js"></script>
     <script src="js/main.js"></script>
     <link href="css/style.css" rel="stylesheet">
     <link href="css/default.css" rel="stylesheet">
@@ -38,7 +40,7 @@
               </div>
               <div id="typeMessagePanel">
                   <input type="text" id="messageInput">
-                  <button class="button" id="bnSend">Send</button>
+                  <button class="button" id="bnSend" onclick="sendMessage('#messageInput')">Send</button>
               </div>
           </div>
 
