@@ -150,28 +150,32 @@ app.delete("/contactlist/:name", (req, res, next) => {
 var io = socket(server);
 io.on("connection", (socket) => {
   socket.on("loggedin", (token) => {
-    User.ConnectSocket(token, socket.id);
-
-    Message.GetMessagesOfUser(token);
-    //===== Messaging ===
-    socket.on("sendMessage", (toUser, msg) => {
-      Message.sendMessage(socket.id, toUser, msg).then((res) => {
-        if(res.toSocket) {
-          io.to(res.toSocket).emit("newMessage", res.msg);
-        }
-        socket.emit("newMessage", res.msg);
-      }, () => {
-        socket.emit("sendingFail");
-      });
+    User.ConnectSocket(token, socket.id).then(() => {
+      return Message.GetMessagesOfUser(token).ca;
+    }).catch(() => {
+      socket.emit("unauthorized");
     });
 
-    //===================
-
-    socket.on("disconnect", () => {
-      User.DisconnectSocket(socket.id);
-    })
+    //===== Messaging ===
   });
 
+  socket.on("sendMessage", (toUser, msg) => {
+    Message.sendMessage(socket.id, toUser, msg).then((res) => {
+      if(res.toSocket) {
+        io.to(res.toSocket).emit("newMessage", res.msg);
+      }
+      socket.emit("newMessage", res.msg);
+    }, () => {
+      socket.emit("sendingFail");
+    });
+  });
+
+  // socket.on("");
+  //===================
+
+  socket.on("disconnect", () => {
+    User.DisconnectSocket(socket.id);
+  })
   // TODO init events
   // TODO messages - send read
   // TODO contactlist - add, remove

@@ -249,3 +249,7 @@ button#bnSend{
 
     font-weight: bold;
 }
+
+.notInList {
+  color: grey;
+}

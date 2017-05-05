@@ -107,11 +107,11 @@ exports = {
     });
   },
   ConnectSocket: (token, socketId) => {
-    exports.CheckToken(token).then(user => {
+    return exports.CheckToken(token).then(user => {
       // console.log(user)
       user.socket = socketId;
       user.save();
-    });
+    }).catch(() => Promise.reject());
   },
   DisconnectSocket: (socketId) => {
     User.findOne({socket: socketId}, (err, user) => {
@@ -145,6 +145,7 @@ exports = {
           rej(err);
           return;
         } else {
+          user.socket = null;
           user.authtoken = null;
           user.save((err, user) => {
             if(err) {

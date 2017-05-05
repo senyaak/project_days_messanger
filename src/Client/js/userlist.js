@@ -79,9 +79,14 @@ function DeleteContact(name) {
 }
 
 
-function CreateListElement(user, openDialogFn) {
+function CreateListElement(user, openDialogFn, notInContactlist) {
+  if($(`.contact-${user}`).length > 0) {
+    $(`.contact-${user}`).removeClass("notInList");
+    $(`.contact-${user}`).addClass("inList");
+    return;
+  }
   $("#contactList").append(`
-    <li class="contact contact-${user}">
+    <li class="contact contact-${user} ${notInContactlist?"inList":"notInList"}">
         <span class="dialog-changer">${user}</span>
         <button class ="button" onclick="DeleteContact('${user}')"> x </button>
     </li>

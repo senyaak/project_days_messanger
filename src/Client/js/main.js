@@ -6,7 +6,7 @@ socket.on("newMessage", (msg) => {
     return;
   }
 
-  var userlist = localStorage.getItem("userlist");
+  var userlist = localStorage.getItem("userList");
   if(userlist === null) {
     userlist = [];
   }
@@ -15,12 +15,17 @@ socket.on("newMessage", (msg) => {
   }
 });
 
+socket.on("unauthorized", () => {
+  $.cookie("token", "");
+  setTimeout(() =>leaveChatroom(), 400);
+});
+
 function UpdateState() {
-  if($.cookie("token")) {
-    socket.emit("loggedin", $.cookie("token"));
+  if($.cookie("token") ) {
     // TODO add response from server
     setUsername();
     enterChatroom();
+    socket.emit("loggedin", $.cookie("token"));
   } else {
     $(".authPanel.hidden").removeClass("hidden");
   }
@@ -58,7 +63,7 @@ function signin() {
       UpdateState();
     },
     error: () => {
-      console.log("user already exists");
+      $("#ipUsername").val("user already exists");
     }
   });
 }
