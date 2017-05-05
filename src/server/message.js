@@ -40,7 +40,7 @@ exports = {
             return;
           } else {
             User.FindUser({username: toUserName}).then((toUser) => {
-              res({toSocket: toUser.socket, msg: message.message, msgId: message.id});
+              res({toSocket: toUser.socket, msg: message});
             });
           }
         });

@@ -103,7 +103,7 @@ app.put("/message/:id", (req, res, next) => {
     if(sender && sender.socket) {
       io.to(sender.socket).emit("messageread", req.params.id);
     }
-    
+
     res.sendStatus(200);
     next();
   }).catch((err) => {
@@ -157,10 +157,9 @@ io.on("connection", (socket) => {
     socket.on("sendMessage", (toUser, msg) => {
       Message.sendMessage(socket.id, toUser, msg).then((res) => {
         if(res.toSocket) {
-          io.to(res.toSocket).emit("newMessage", {from: res.fromUser, msg: msg, msgId: res.msgId});
+          io.to(res.toSocket).emit("newMessage", res.msg);
         }
-
-        socket.emit("sendingSuccess");
+        socket.emit("newMessage", res.msg);
       }, () => {
         socket.emit("sendingFail");
       });

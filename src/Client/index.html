@@ -30,7 +30,7 @@
             </div>
             <div class="addContact">
                 <input type="text" id="newContact" >
-                <button class="button bnAddContact" onclick="AddNewContact($('#newContact').val(), setChat)">
+                <button class="button bnAddContact" onclick="AddNewContact($('#newContact'), setChat)">
                     Add New Contact
                 </button>
             </div>
@@ -43,16 +43,6 @@
 
               <div id="chatPanel">
 
-                  <div class="messageWrapper">
-                      <div class="message messageMine">
-                          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-                      </div>
-                  </div>
-                  <div class="messageWrapper">
-                      <div class="message messageOther">
-                          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et
-                      </div>
-                  </div>
               </div>
               <div id="typeMessagePanel">
                   <input type="text" id="messageInput">

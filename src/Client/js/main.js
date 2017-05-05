@@ -1,8 +1,24 @@
 var socket = io();
 
+socket.on("newMessage", (msg) => {
+  if(chosenUser === msg.from || chosenUser === msg.to) {
+    newMessage(msg);
+    return;
+  }
+
+  var userlist = localStorage.getItem("userlist");
+  if(userlist === null) {
+    userlist = [];
+  }
+  if(userlist.indexOf(msg.from)) {
+    CreateListElement(msg.from, setChat);
+  }
+});
+
 function UpdateState() {
   if($.cookie("token")) {
     socket.emit("loggedin", $.cookie("token"));
+    // TODO add response from server
     setUsername();
     enterChatroom();
   } else {
@@ -56,6 +72,7 @@ function logout() {
       localStorage.removeItem("username");
       leaveChatroom();
       UpdateState();
+      ClearChat();
     },
     error: () => {
       console.log("cannot log out");
@@ -72,14 +89,6 @@ function setUsername(username) {
   }
   $("#userPanel .label").html(username);
 }
-
-$(document).ready(() => {
-  UpdateState();
-});
-
-// socket.on("newMessage", (msgObj) => {
-//   console.log(msgObj);
-// })
 
 function enterChatroom(){
   let $loginDialog = $("#loginDialog");
@@ -110,3 +119,7 @@ function leaveChatroom() {
   });
   ClearUserlist($("#contactPanel"));
 }
+
+$(document).ready(() => {
+  UpdateState();
+});

@@ -10,9 +10,27 @@ function CreateUserlist(container, openDialogFn) {
   $.ajax({
     url: "/contactlist",
     type: "get",
-    success: (data) => {
-      data.forEach((user, i) => {
+    success: (users) => {
+      users.forEach((user, i) => {
         CreateListElement(user, openDialogFn);
+      });
+
+      /// add users who send messages but not in contact list
+      $.ajax({
+        url: "/messages",
+        type: "get",
+        success: (messages) => {
+          messages.forEach((msg, i) => {
+            if(msg.to === localStorage.getItem("username") && users.indexOf(msg.from) === -1) {
+              CreateListElement(msg.from, openDialogFn);
+              users.push(msg.from);
+            }
+          });
+          localStorage.setItem("userList", users);
+        },
+        error: () => {
+          console.log("Server Unavailable!");
+        }
       });
     },
     error: () => {
@@ -50,7 +68,7 @@ function DeleteContact(name) {
       if(response.status !== 304) {
         $(`.contact-${name}`).remove()
         if(chosenUser === name) {
-          clearChat();
+          ClearChat();
         }
       }
     },

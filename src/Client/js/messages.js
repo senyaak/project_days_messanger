@@ -1,16 +1,15 @@
 var chosenUser = null;
 function setChat(name) {
+  ClearChat();
   chosenUser = name;
-  var $chatPanel = $("#chatPanel");
-  $chatPanel.empty();
 
   $.ajax({
     url: `/messages/${name}`,
     type: "get",
     success: (data) => {
       console.log("test", data);
-      data.forEach((message, i) => {
-        // TODO add messages
+      data.forEach((msg, i) => {
+        newMessage(msg);
       });
     },
     error: () => {
@@ -31,6 +30,18 @@ function sendMessage(selector) {
 
 
 function ClearChat() {
+  var $chatPanel = $("#chatPanel");
+  $chatPanel.empty();
   chosenUser = null;
-  // TODO remove messages
+}
+
+
+function newMessage(msg) {
+  var positionClass = msg.from === localStorage.getItem("username")? "messageMine": "messageOther";
+  var content = `
+  <div class="messageWrapper ${msg.read?"read":"notread"}" data-id="${msg._id}">
+    <div class="message ${positionClass}">${msg.message}</div>
+    <div>${msg.created_at}</div>
+  </div>`;
+  $("#chatPanel").append(content);
 }
