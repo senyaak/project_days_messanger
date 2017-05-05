@@ -20,8 +20,13 @@ function setChat(name) {
 }
 
 function sendMessage(selector) {
-  console.log("send message to", chosenUser);
-  socket.emit("sendMessage", chosenUser, $(selector).val());
+  if(chosenUser !== null) {
+    console.log("send message to", chosenUser);
+    socket.emit("sendMessage", chosenUser, $(selector).val());
+    $(selector).val("");
+  } else {
+    console.log("user not set");
+  }
 }
 
 

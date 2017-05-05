@@ -25,7 +25,8 @@ function ClearUserlist(container) {
   $(container).empty();
 }
 
-function AddNewContact(name, openDialogFn) {
+function AddNewContact(input, openDialogFn) {
+  var name = $(input).val()
   $.ajax({
     url: `/contactlist/${name}`,
     type: "put",
@@ -35,6 +36,7 @@ function AddNewContact(name, openDialogFn) {
       }
     },
     error: () => {
+      $(input).val("User not found")
       console.log("Server Unavailable!");
     }
   });

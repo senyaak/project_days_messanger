@@ -22,6 +22,9 @@ function login() {
       $.cookie("token", res.token);
       setUsername(name);
       UpdateState()
+    },
+    error: () => {
+      $("#ipUsername").val("User not found");
     }
   });
 }
