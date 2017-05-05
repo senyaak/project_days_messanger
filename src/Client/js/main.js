@@ -48,6 +48,7 @@ function signin() {
 }
 
 function logout() {
+  leaveChatroom();
   $.ajax({
     url: "/logout",
     type: "POST",

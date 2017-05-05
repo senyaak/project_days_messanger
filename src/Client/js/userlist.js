@@ -63,8 +63,9 @@ function DeleteContact(name) {
 
 function CreateListElement(user, openDialogFn) {
   $("#contactList").append(`
-    <li class="contact-${user}">
-      <span class="dialog-changer">${user}</span> <button onclick="DeleteContact('${user}')"> - </button>
+    <li class="contact contact-${user}">
+        <span class="dialog-changer">${user}</span>
+        <button class ="button" onclick="DeleteContact('${user}')"> x </button>
     </li>
   `);
   if(openDialogFn) {
