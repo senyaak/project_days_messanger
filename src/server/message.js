@@ -92,7 +92,7 @@ exports = {
               if(err) {
                 rej(err);
               } else {
-                res(User.FindUser({username: message.from}).then((user) => user).cathc(err => null));
+                res(User.FindUser({username: message.from}).then((user) => user).catch(err => null));
               }
             });
           }

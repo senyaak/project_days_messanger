@@ -15,6 +15,10 @@ socket.on("newMessage", (msg) => {
   }
 });
 
+socket.on("messageread", (id) => {
+  console.log("messageRead", id)
+  $(`[data-id*=${id}] .messageRead`).html("gelesen")
+});
 socket.on("unauthorized", () => {
   $.cookie("token", "");
   setTimeout(() =>leaveChatroom(), 400);

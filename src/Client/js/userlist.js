@@ -22,7 +22,7 @@ function CreateUserlist(container, openDialogFn) {
         success: (messages) => {
           messages.forEach((msg, i) => {
             if(msg.to === localStorage.getItem("username") && users.indexOf(msg.from) === -1) {
-              CreateListElement(msg.from, openDialogFn);
+              CreateListElement(msg.from, openDialogFn, true);
               users.push(msg.from);
             }
           });
@@ -86,7 +86,7 @@ function CreateListElement(user, openDialogFn, notInContactlist) {
     return;
   }
   $("#contactList").append(`
-    <li class="contact contact-${user} ${notInContactlist?"inList":"notInList"}">
+    <li class="contact contact-${user} ${notInContactlist?"notInList":"inList"}">
         <span class="dialog-changer">${user}</span>
         <button class ="button" onclick="DeleteContact('${user}')"> x </button>
     </li>
