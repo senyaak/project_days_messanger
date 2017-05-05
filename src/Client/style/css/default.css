@@ -1,5 +1,5 @@
 body{
-    margin: 0px;
+    margin: 0;
 }
 
 div#loginDialog {
@@ -25,6 +25,8 @@ input#ipUsername {
     width: 80%;
     margin-top: 50px;
     margin-bottom: 20px;
+
+    border-radius: 1px;
 }
 
 button.bnloginDialog{
@@ -32,6 +34,8 @@ button.bnloginDialog{
     width: 80%;
     font-weight: bold;
     margin-top: 20px;
+
+    border-radius: 2px;
 }
 
 label#lbHeader{
@@ -87,6 +91,8 @@ div#contactPanel{
     flex-direction: column;
     align-items: flex-start;
 
+    overflow: auto;
+
 }
 
 div.addContact{
@@ -110,7 +116,7 @@ input#newContact{
     margin-bottom: 10px;
 
     border: thin solid #4dac71;
-    border-radius: 3px;
+    border-radius: 1px;
     box-shadow: 0 0 0 1px #4dac71;
 }
 
@@ -118,6 +124,7 @@ button.bnAddContact{
 
     width: 80%;
     font-weight: bold;
+    border-radius: 2px;
 }
 
 ul#contactList{
@@ -161,6 +168,7 @@ li.contact button{
     height: 25px;
     line-height: 25px;
     padding: 0;
+    border-radius: 2px;
 
 }
 
@@ -170,6 +178,8 @@ div#chatroomPanelRight{
 
     display: flex;
     flex-direction: column;
+
+    min-height: 400px;
 }
 
 div#chatPartner{
@@ -192,7 +202,7 @@ div#chatPanel{
     flex-direction: column;
     align-items: flex-start;
 
-
+    overflow: auto;
 }
 
 div.messageWrapper{
@@ -232,6 +242,8 @@ span.messageRead{
     color: darkgray;
     font-style: italic;
     font-size: 16px;
+
+    margin-right: 20px;
 }
 
 div.messageOther{
@@ -267,6 +279,7 @@ input#messageInput{
 
     color: #ffffff;
     border-color: #4dac71;
+    border-radius: 1px;
     box-shadow: 0 0 0 1px #4dac71;
 }
 
@@ -278,6 +291,7 @@ button#bnSend{
     margin-right: 10px;
 
     font-weight: bold;
+    border-radius: 2px;
 }
 
 .notInList {
