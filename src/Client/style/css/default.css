@@ -172,9 +172,21 @@ div#chatroomPanelRight{
     flex-direction: column;
 }
 
+div#chatPartner{
+
+    height: 50px;
+
+    line-height: 50px;
+    padding-left: 20px;
+    margin-bottom: 10px;
+
+    background-color: rgba(26, 26, 26, 0.34);
+    color: #ffffff;
+}
+
 div#chatPanel{
 
-    flex: 10;
+    flex: 15;
 
     display: flex;
     flex-direction: column;
@@ -198,13 +210,28 @@ div.message{
 
     display: block;
 
-    padding: 5px;
+    padding: 0 6px;
 
-    background-color: rgba(0, 0, 0, 0.31);
+    background-color: rgba(0, 0, 0, 0.36);
     color: #ffffff;
     border: thin solid #4dac71;
-    border-radius: 3px;
+    border-radius: 1px;
     box-shadow: 0 0 0 1px #4dac71;
+}
+
+span.messageTime {
+
+    float: right;
+    color: darkgray;
+    font-size: 16px;
+}
+
+span.messageRead{
+
+    float: left;
+    color: darkgray;
+    font-style: italic;
+    font-size: 16px;
 }
 
 div.messageOther{
@@ -227,6 +254,9 @@ div#typeMessagePanel{
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
 input#messageInput{

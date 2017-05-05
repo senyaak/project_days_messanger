@@ -2,6 +2,7 @@ var chosenUser = null;
 function setChat(name) {
   ClearChat();
   chosenUser = name;
+  $("#chatPartner").html(name);
 
   $.ajax({
     url: `/messages/${name}`,
@@ -32,6 +33,7 @@ function sendMessage(selector) {
 function ClearChat() {
   var $chatPanel = $("#chatPanel");
   $chatPanel.empty();
+  $("#chatPartner").empty();
   chosenUser = null;
 }
 
@@ -39,9 +41,14 @@ function ClearChat() {
 function newMessage(msg) {
   var positionClass = msg.from === localStorage.getItem("username")? "messageMine": "messageOther";
   var content = `
-  <div class="messageWrapper ${msg.read?"read":"notread"}" data-id="${msg._id}">
-    <div class="message ${positionClass}">${msg.message}</div>
-    <div>${msg.created_at}</div>
-  </div>`;
+  <div class="messageWrapper" data-id="${msg._id}">
+    <div class="message ${positionClass}">
+      ${msg.message}
+      <div>
+        <span class="messageRead">${msg.read?"gelesen":"nicht gelesen"}</span>
+        <span class="messageTime">${msg.created_at}</span>
+      </div>
+    </div>
+    </div>`;
   $("#chatPanel").append(content);
 }
